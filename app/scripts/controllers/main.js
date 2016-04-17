@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('angularCsvToChartApp')
-  .controller('MainCtrl', ['$scope', '$parse', function ($scope, $parse) {
+  .controller('MainCtrl', ['$scope', '$parse','$interval', function ($scope, $parse, $interval) {
+
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -19,6 +20,9 @@ angular.module('angularCsvToChartApp')
     };
 
     var _lastGoodResult = '';
+    var labels = [];
+    var values = [];
+
     $scope.toPrettyJSON = function (json, tabWidth) {
 			var objStr = JSON.stringify(json);
 			var obj = null;
@@ -32,6 +36,35 @@ angular.module('angularCsvToChartApp')
 			var result = JSON.stringify(obj, null, Number(tabWidth));
 			_lastGoodResult = result;
 
+      // Formatting labels and values for chart
+      labels=[];
+      values=[];
+      var resultJson = angular.fromJson(result);
+      var jsonLoopLabels = angular.forEach(resultJson,function(value,key){
+        this.push(value.Month);
+      },labels);
+      var jsonLoopValues = angular.forEach(resultJson,function(value,key){
+        this.push(value.Data);
+      },values);
+      // End of formatting
+
 			return result;
     };
+
+    // $interval to avoid too many digest cycle bug
+    $interval(function(){
+      if(labels.length>0 && values.length>0){
+        $scope.labels=labels;
+        $scope.series = ['Data'];
+        $scope.data = [
+          values
+        ];
+      };
+    }, 100)
+
+    // Interactivity between chart and table
+    // $scope.onClick = function (points, evt) {
+    //   console.log(points, evt);
+    // };
+
   }]);

@@ -2,13 +2,9 @@
 
 angular
   .module('angularCsvToChartApp', [
-    'ngAnimate',
-    'ngCookies',
-    'ngResource',
     'ngRoute',
-    'ngSanitize',
-    'ngTouch',
-    'ngCsvImport'
+    'ngCsvImport',
+    'chart.js'
   ])
   .config(function ($routeProvider) {
     $routeProvider

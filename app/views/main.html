@@ -9,11 +9,25 @@
   </div>
 </div>
 
-<div class="block row"  ng-if="csv.result">
-  <div class="content" hljs source="toPrettyJSON(csv.result, 2)"></div>
-</div>
+<canvas id="line" class="chart chart-line" chart-data="data"
+  chart-labels="labels" chart-legend="true" chart-series="series"
+  chart-click="onClick">
+</canvas>
 
-<div ng-if="csv.content" class="block left">
-  <h2>CSV</h2>
-  <div class="content"><pre>{{ csv.content }}</pre></div>
+<canvas id="bar" class="chart chart-bar"
+  chart-data="data" chart-labels="labels"> chart-series="series"
+</canvas>
+
+<div class="block row"  ng-if="csv.result">
+  <div class="content" hljs source="toPrettyJSON(csv.result, 2)">
+    <table class="table table-condensed table-bordered">
+      <div class="check-element animate-hide" ng-hide=true>{{toPrettyJSON(csv.result, 2)}}</div>
+      <tbody ng:repeat="results in csv.result">
+        <tr>
+          <td>{{results.Month}}</td>
+          <td>{{results.Data}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
